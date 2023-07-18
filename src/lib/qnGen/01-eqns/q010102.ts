@@ -23,7 +23,7 @@ export function qnGen(vars: {
 	// D = bc - Bd
 	const sign = signCase === 1 ? '>' : '<';
 	const numQn = new Polynomial([1, b, c]);
-	const den = d < 0 ? new Polynomial([d, e]) : new Polynomial([e, d], { ascending: true });
+	const den = d > 0 ? new Polynomial([d, e]) : new Polynomial([e, d], { ascending: true });
 
 	//! generate question
 	const qn = `${display(`\\frac{${numQn}}{${den}} ${sign} 0`)}`;
