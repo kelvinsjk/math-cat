@@ -2,11 +2,11 @@
   import { fly, scale } from 'svelte/transition';
   import { content } from './content';
 	import { math } from 'mathlifier';
-  import {goto} from '$app/navigation';
-  import {page} from '$app/stores';
+  import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
 	import { browser } from '$app/environment';
   
-  const {title, body,steps} = content;
+  const { title, body, steps } = content;
   let learnActive = true;
   function setLearnActive(active: boolean) {
     learnActive = active;
@@ -16,22 +16,9 @@
   import { vars } from './variables';
   import { getRandomInt } from 'mathlify';
   import { qnGen } from '$lib/qnGen/01-eqns/q010101';
+	import { tick } from 'svelte';
   let variables = getNewVars();
   $: [qn, ans, soln] = qnGen(variables);
-
-  // make heights match
-  let height: number;
-  let div: HTMLDivElement;
-  //$: setMaxHeight(learnActive);
-  //function setMaxHeight(learnActive: boolean): void {
-  //  if (div){
-  //    if (learnActive) {
-  //      div.style.height = 'auto';
-  //    } else {
-  //      div.style.height = `${height}px`;
-  //    }
-  //  }
-  //}
 
   type Variables = typeof vars[0];
   function getNewVars(): Variables {
@@ -65,6 +52,7 @@
       class="tab tab-lifted"
       class:tab-active={!learnActive}
       on:click={() => setLearnActive(false)}
+      id="practice-tab"
     >
     {#if !learnActive}
       <div class="highlight" in:fly={{x: -200, duration: 500}}></div>
@@ -97,7 +85,7 @@
           <h2>Practice</h2>
           <button 
             class="btn btn-secondary"
-            on:click={() => {setLearnActive(false); window.scroll({top: 0});}}
+            on:click={async () => {setLearnActive(false); await tick(); document.getElementById('practice-tab')?.scrollIntoView();}}
           >
             Try out this technique
             <img src="/icons/edit.svg" class="h-6 w-6 my-0" alt="practice"/>
@@ -137,7 +125,7 @@
           {/key}
           <button 
             class="btn btn-secondary"
-            on:click={() => {variables = getNewVars(); window.scroll({top: 0});}}
+            on:click={async () => {variables = getNewVars(); await tick(); document.getElementById('practice-tab')?.scrollIntoView();}}
           >
             Generate new question
             <img src="/icons/edit.svg" class="h-6 w-6 my-0" alt="practice"/>

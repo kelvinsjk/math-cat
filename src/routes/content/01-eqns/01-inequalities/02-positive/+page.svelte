@@ -16,22 +16,9 @@
   import { vars } from './variables';
   import { getRandomInt } from 'mathlify';
   import { qnGen } from '$lib/qnGen/01-eqns/q010102';
+	import { tick } from 'svelte';
   let variables = getNewVars();
   $: [qn, ans, soln] = qnGen(variables);
-
-  // make heights match
-  let height: number;
-  let div: HTMLDivElement;
-  //$: setMaxHeight(learnActive);
-  //function setMaxHeight(learnActive: boolean): void {
-  //  if (div){
-  //    if (learnActive) {
-  //      div.style.height = 'auto';
-  //    } else {
-  //      div.style.height = `${height}px`;
-  //    }
-  //  }
-  //}
 
   type Variables = typeof vars[0];
   function getNewVars(): Variables {
@@ -65,6 +52,7 @@
       class="tab tab-lifted"
       class:tab-active={!learnActive}
       on:click={() => setLearnActive(false)}
+      id="practice-tab"
     >
     {#if !learnActive}
       <div class="highlight" in:fly={{x: -200, duration: 500}}></div>
@@ -73,8 +61,10 @@
     </button> 
   </div>
   <div class="body">
-    <label class="swap swap-flip w-full place-content-stretch">
-      <input type="checkbox" disabled checked={learnActive} />
+    <div
+      class="swap swap-flip w-full place-content-stretch"
+      class:swap-active={learnActive}
+    >
       <div class="swap-on">
         {#if learnActive}
         <div>
@@ -97,7 +87,7 @@
           <h2>Practice</h2>
           <button 
             class="btn btn-secondary"
-            on:click={() => {setLearnActive(false); window.scroll({top: 0});}}
+            on:click={async () => {setLearnActive(false); await tick(); document.getElementById('practice-tab')?.scrollIntoView();}}
           >
             Try out this technique
             <img src="/icons/edit.svg" class="h-6 w-6 my-0" alt="practice"/>
@@ -137,32 +127,23 @@
           {/key}
           <button 
             class="btn btn-secondary"
-            on:click={() => {variables = getNewVars(); window.scroll({top: 0});}}
+            on:click={() => {variables = getNewVars(); setTimeout(() => document.getElementById('practice-tab')?.scrollIntoView(), 0);}}
           >
             Generate new question
             <img src="/icons/edit.svg" class="h-6 w-6 my-0" alt="practice"/>
           </button>
         </div>
       </div>
-    </label>
+    </div>
   </div>
-  <h2>Extensions</h2>
-  <h3>What if our quadratic is not factorisable?</h3>
+  <h2>Next Section</h2>
   <p>
-    Maybe the quadratic still has roots, but they happen to be irrational so
-    we are unable to obtain nice factors.
+    In the next section, we will learn
+    how to solve equations and inequalities with the
+    aid of a graphing calculator.
   </p>
-  <p>
-    In that case we can use our quadratic formula {@html math(`x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}`)}
-    to find the roots and resume with our number line approach.
-  </p>
-  <h2>Next technique</h2>
-  <p>
-    The next technique will tackle the case if our quadratic
-    is not factorizable because it has no real roots
-  </p>
-  <a class="btn btn-primary" href="./02-positive">
-    Positive Quadratics
+  <a class="btn btn-primary" href="../02-gc">
+    GC Techniques
     <img src="/icons/next-white.svg" class="h-6 w-6 my-0 text-white" alt="next"/>
   </a>
 </main>
@@ -191,5 +172,9 @@
     padding: 0.5rem;
     border-width: 0 0 0 var(--tab-border, 1px);
     border-left-color: hsl(var(--b3) / var(--tw-bg-opacity, 1));;
+  }
+  .swap {
+    cursor: auto;
+    user-select: auto;
   }
 </style>
