@@ -1,4 +1,4 @@
-import { alignStar, display, equation, newline, math, newParagraph, gatherStar } from 'mathlifier';
+import { alignStar, display, equation, newline, math, newParagraph } from 'mathlifier';
 import { Polynomial, Expression, Fraction, completeSquare, solveLinear, Term } from 'mathlify';
 
 // working
@@ -62,14 +62,6 @@ const step3 = `We now use the regular number line approach to complete
   ${display(`x ${signAns} ${root} \\; \\blacksquare`)}
 `;
 //! Number line
-
-function frac(num: string, den: string, flip = false): string {
-	if (flip) {
-		[num, den] = [den, num];
-	}
-
-	return den === '1' ? `${num}` : `\\frac{${num}}{${den}}`;
-}
 
 const title = 'Quadratics that are always positive';
 

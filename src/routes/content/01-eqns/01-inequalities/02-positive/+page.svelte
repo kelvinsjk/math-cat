@@ -1,7 +1,6 @@
 <script lang="ts">
   import { fly, scale } from 'svelte/transition';
   import { content } from './content';
-	import { math } from 'mathlifier';
   import {goto} from '$app/navigation';
   import {page} from '$app/stores';
 	import { browser } from '$app/environment';
@@ -31,7 +30,7 @@
 </script>
 
 <svelte:head>
-  <title>{title}</title>
+  <title>Positive Quadratics</title>
 </svelte:head>
 
 

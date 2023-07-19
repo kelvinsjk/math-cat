@@ -125,7 +125,7 @@
           {/key}
           <button 
             class="btn btn-secondary"
-            on:click={async () => {variables = getNewVars(); await tick(); document.getElementById('practice-tab')?.scrollIntoView();}}
+            on:click={()=>{variables = getNewVars(); setTimeout(() => document.getElementById('practice-tab')?.scrollIntoView(), 0);}}
           >
             Generate new question
             <img src="/icons/edit.svg" class="h-6 w-6 my-0" alt="practice"/>
@@ -179,5 +179,9 @@
     padding: 0.5rem;
     border-width: 0 0 0 var(--tab-border, 1px);
     border-left-color: hsl(var(--b3) / var(--tw-bg-opacity, 1));;
+  }
+  .swap {
+    cursor: auto;
+    user-select: auto;
   }
 </style>

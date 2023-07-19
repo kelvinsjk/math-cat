@@ -1,21 +1,23 @@
-import { display, } from "mathlifier"
+import { alignStar, display, } from "mathlifier"
 
-const title = 'Rational inequalities';
+const title = 'GC methods';
 
-const body = `In this section, we will learn how to solve rational inequalities
-such as ${display(`\\frac{x+1}{(x-2)(x+3)} > 0`)} and
-${display(`\\frac{x^2 + 5x + 9}{x-1} < 1`)}
-algebraically.
+const body = `In this section, we will learn how to solve equations and inequalities
+with the help of a graphing calculator. They include systems of linear equations
+such as ${alignStar(`x+y+z &= 2 \\\\ 2x - 3y + z &= -1 \\\\ x - y + 2z &= 0`)} and
+solving inequalities such as
+${display(`2\\ln x + 1 > x`)}
+graphically.
 `;
 
 const techniques = [
   {
-    title: 'Factorisable expressions',
-    url: '01-factorisable'
+    title: 'System of linear equations',
+    url: '01-sle'
   },
   { 
-    title: 'Positive quadratics',
-    url: '02-positive'
+    title: 'Graphical equations and inequalities',
+    url: '02-graphical'
   }
 ];
 

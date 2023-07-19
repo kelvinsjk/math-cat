@@ -1,7 +1,7 @@
 <script lang="ts">
   import { content } from './content';
   const {title, body, techniques} = content;
-  const currentSectionUrl = '01-inequalities';
+  const currentSectionUrl = '02-gc';
 </script>
 
 <svelte:head>
