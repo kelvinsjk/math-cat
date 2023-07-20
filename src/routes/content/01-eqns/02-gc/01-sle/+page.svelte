@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { fly, scale, slide } from 'svelte/transition';
+  import { crossfade, scale, slide } from 'svelte/transition';
   import { content } from './content';
 	import { align, math } from 'mathlifier';
   import { goto } from '$app/navigation';
@@ -50,7 +50,6 @@
     {id: 3, title: 'Example 2',},
     {id: 4, title: 'Practice 2'},
   ]
-	import { crossfade } from 'svelte/transition';
 	import { tick } from 'svelte';
 	const [send, receive] = crossfade({
 		duration: (d) => Math.sqrt(d * 1200),

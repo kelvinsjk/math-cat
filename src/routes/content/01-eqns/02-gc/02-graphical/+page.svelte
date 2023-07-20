@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { fly, scale } from 'svelte/transition';
+  import { fly, scale, crossfade } from 'svelte/transition';
   import { content } from './content';
   import {goto} from '$app/navigation';
   import {page} from '$app/stores';
@@ -16,6 +16,7 @@
   import { getRandomInt } from 'mathlify';
   import { qnGen } from '$lib/qnGen/01-eqns/q010102';
 	import { tick } from 'svelte';
+	import { display, math } from 'mathlifier';
   let variables = getNewVars();
   $: [qn, ans, soln] = qnGen(variables);
 
@@ -27,6 +28,10 @@
     }
     return variables
   }
+
+  const [send, receive] = crossfade({
+		duration: (d) => Math.sqrt(d * 1200),
+	});
 </script>
 
 <svelte:head>
@@ -43,7 +48,10 @@
       on:click={() => setLearnActive(true)}
     >
     {#if learnActive}
-      <div class="highlight" in:fly={{x: 200, duration: 500}}></div>
+      <div class="highlight" 
+        in:receive={{key: 0}}
+        out:send={{key: 0}}
+      ></div>
     {/if}
       Learn
     </button> 
@@ -67,7 +75,47 @@
       <div class="swap-on">
         {#if learnActive}
         <div>
-          <h2 class="mt-2">Example with comments</h2>
+          <h2 class="mt-2">Overview</h2>
+          <p>
+            Some equations and inequalities like
+            {@html math(`\\mathrm{e}^x = x + 5`)}
+            or
+            {@html math(`\\ln x > 5 - x`)}
+            are impossible or impractical to solve by algebraic methods so
+            we use use <b>graphical</b> methods using a GC.
+          </p>
+          <p>
+            This is sometimes also called <b>numerical</b> methods
+            as we will be getting numerical answers as opposed to
+            algebraic quantities.
+          </p>
+          <h2>Zero solver</h2>
+          <p>
+            If you're using the TI-84 class of calculators, we will go to
+            <kbd class="kbd kbd-sm">APPS</kbd> and then select
+            <kbd class="kbd kbd-sm">PlySmlt2</kbd>.
+          </p>
+          <p>
+            In the main menu, we select
+            <kbd class="kbd kbd-sm">2: SIMULT EQN SOLVER</kbd>. For the example above,
+            we have 3 equations and 3 unknowns so select those options and click
+            <kbd class="kbd kbd-sm">NEXT</kbd> (this is displayed in the right corner so it
+            corresponds to the <kbd class="kbd kbd-sm">GRAPH</kbd> button).
+          </p>
+          <p>
+            Enter our coefficients and click solve. If you are following along the example above,
+            you should see the solution
+            {@html math(`x=1,`)}
+            {@html math(`y=2`)}
+            and {@html math(`z=-3`)} (as {@html math(`x_1, x_2`)}
+            and {@html math(`x_3`)} respectively).
+          </p>
+          <h2>Intersect solver</h2>
+          <h2>Graphical inequalities</h2>
+          <p>
+            We can also solve inequalities graphically. We will
+            illustrate this with the following example.
+          </p>
           <h3>Question</h3>
           {@html body}
           <h3>Solution</h3>

@@ -1,8 +1,8 @@
 import { alignStar, display, equation, newline, math, newParagraph } from 'mathlifier';
 import { Polynomial, Expression, Fraction, completeSquare, solveLinear, Term } from 'mathlify';
 
-// working
-const prevTechnique = `<a href="./01-factorisable">previous technique,</a>`;
+// title
+const title = 'Graphical methods';
 
 // qn
 const a = 1,
@@ -22,12 +22,11 @@ const completedSquare = completeSquare(num);
 const signAns = '>';
 const root = solveLinear(den);
 
-const body = `Solve
+const qn = `Solve
   ${display(`\\frac{${num}}{${den}} ${sign} 0.`)}
 `;
 
 const step0 = `Just like in the
-${prevTechnique}
 we make one side of our inequality zero by addition
 or subtraction.
 ${newParagraph}
@@ -45,7 +44,6 @@ ${alignStar(`\\frac{${num}}{${den}}       &${sign} 0 \\\\
 const step2 = `Upon completing the square, we are able to observe
   that our expression on the numerator is always positive.
   ${newParagraph}
-  In our ${prevTechnique} we cautioned against "cross-multiplication" as
   inequality signs change depending on whether an expression is positive or
   negative. Now that our numerator is always positive,
   we can now divide both sides of our inequality by it.
@@ -62,8 +60,6 @@ const step3 = `We now use the regular number line approach to complete
   ${display(`x ${signAns} ${root} \\; \\blacksquare`)}
 `;
 //! Number line
-
-const title = 'Quadratics that are always positive';
 
 const steps = [
 	{
@@ -86,6 +82,6 @@ const steps = [
 
 export const content = {
 	title,
-	body,
+	body: qn,
 	steps,
 };
