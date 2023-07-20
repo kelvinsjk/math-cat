@@ -32,7 +32,8 @@ export function qnGen(vars: {
 	const signGen = d < 0 ? signCase * -1 : signCase;
 	const ansSign = signGen === 1 ? '>' : '<';
 	const root = solveLinear(den);
-	const ans = math(`x ${ansSign} ${root}`);
+	const ansString = `x ${ansSign} ${root}`;
+	const ans = math(ansString);
 	// alternative answer
 	//const root2 = new Fraction(-e, d);
 	//const ansGen = math(`x ${ansSign} ${root2}`);
@@ -48,6 +49,6 @@ export function qnGen(vars: {
 		${display(`\\frac{1}{${den}} ${sign} 0`)} 
   `;
 	// TODO: number line
-	soln += ans;
+	soln += display(ansString);
 	return [qn, ans, soln];
 }

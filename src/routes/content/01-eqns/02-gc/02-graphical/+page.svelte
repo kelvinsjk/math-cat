@@ -11,9 +11,13 @@
     learnActive = active;
   }
 
+  const x1 = bisection((x)=>Math.exp(-x)-5/(x**2+1)+1, -1, 0);
+  const x2 = bisection((x)=>Math.exp(-x)-5/(x**2+1)+1, 1, 2);
+  const x3 = bisection((x)=>Math.exp(-x)-5/(x**2+1)+1-3*x, -1, 0);
+
   // practice
   import { vars } from './variables';
-  import { getRandomInt } from 'mathlify';
+  import { bisection, getRandomInt } from 'mathlify';
   import { qnGen } from '$lib/qnGen/01-eqns/q010102';
 	import { tick } from 'svelte';
 	import { display, math } from 'mathlifier';
@@ -48,10 +52,7 @@
       on:click={() => setLearnActive(true)}
     >
     {#if learnActive}
-      <div class="highlight" 
-        in:receive={{key: 0}}
-        out:send={{key: 0}}
-      ></div>
+      <div class="highlight" in:receive={{key: 0}} out:send={{key: 0}}></div>
     {/if}
       Learn
     </button> 
@@ -62,7 +63,7 @@
       id="practice-tab"
     >
     {#if !learnActive}
-      <div class="highlight" in:fly={{x: -200, duration: 500}}></div>
+      <div class="highlight" in:receive={{key: 0}} out:send={{key: 0}}></div>
     {/if}
       Practice
     </button> 
@@ -91,31 +92,89 @@
           </p>
           <h2>Zero solver</h2>
           <p>
-            If you're using the TI-84 class of calculators, we will go to
-            <kbd class="kbd kbd-sm">APPS</kbd> and then select
-            <kbd class="kbd kbd-sm">PlySmlt2</kbd>.
+            The "zero" solver helps us find where a curve cuts the
+            {@html math(`x\\textrm{-axis}.`)}
+          </p>
+          <h3>Example</h3>
+          <p>
+            Solve the equation
+          </p>
+            {@html display(`e^{-x} - \\frac{5}{x^2+1} + 1 = 0.`)}
+          <h3>Solution</h3>
+          <p>
+            We will use our GC to plot the graph of
+            {@html math(`y = e^{-x} - \\frac{5}{x^2+1} + 1.`)}
           </p>
           <p>
-            In the main menu, we select
-            <kbd class="kbd kbd-sm">2: SIMULT EQN SOLVER</kbd>. For the example above,
-            we have 3 equations and 3 unknowns so select those options and click
-            <kbd class="kbd kbd-sm">NEXT</kbd> (this is displayed in the right corner so it
-            corresponds to the <kbd class="kbd kbd-sm">GRAPH</kbd> button).
+            We should see two solutions where the curve cuts the 
+            {@html math(`x\\textrm{-axis}.`)} We will get them
+            one at a time.
+          <p>
+            On the TI-84 class of calculators, we will go to
+            <kbd class="kbd kbd-sm">calc</kbd> (2nd followed by the
+            trace, the fourth button on the top row) and then
+            <kbd class="kbd kbd-sm">2: ZERO</kbd>.
           </p>
           <p>
-            Enter our coefficients and click solve. If you are following along the example above,
-            you should see the solution
-            {@html math(`x=1,`)}
-            {@html math(`y=2`)}
-            and {@html math(`z=-3`)} (as {@html math(`x_1, x_2`)}
-            and {@html math(`x_3`)} respectively).
+            The calculator will first ask for the lower bound. 
+            We will scroll to a point left of the root we want to find.
+            Press enter and the calculator will ask for the upper bound.
+            Now scroll past the root and to a point to the right of it and
+            press enter.
+          </p><p>
+            Finally, the calculator will ask for a guess. We can
+            just click enter immediately as long as the previous two steps are done
+            correctly.
+          </p>
+          <h3>Answers</h3>
+          <p>
+            See if you are able to find the two answers
+            {@html math(`x=${x1.toFixed(3)}`)} and {@html math(`x=${x2.toFixed(2)}`)}
+            using your GC.
           </p>
           <h2>Intersect solver</h2>
-          <h2>Graphical inequalities</h2>
           <p>
-            We can also solve inequalities graphically. We will
-            illustrate this with the following example.
+            The "intersect" solver helps us find where two graphs intersect.
           </p>
+          <h3>Example</h3>
+          <p>
+            Solve the equation
+          </p>
+            {@html display(`e^{-x} - \\frac{5}{x^2+1} + 1 = 3x.`)}
+          <h3>Solution</h3>
+          <p>
+            In addition to our graph of 
+            {@html math(`y = e^{-x} - \\frac{5}{x^2+1} + 1`)}
+            from the previous example,
+            we will also plot the graph of {@html math(`y=3x.`)}
+          </p>
+          <p>
+            We should see one intersection between the two.
+          <p>
+            On the TI-84 class of calculators, we will go to
+            <kbd class="kbd kbd-sm">calc</kbd> (2nd followed by the
+            trace, the fourth button on the top row) and then
+            <kbd class="kbd kbd-sm">5: INTERSECT</kbd>.
+          </p>
+          <p>
+            The calculator will ask for the first curve. You can scroll up
+            and down to select it. But if we only have two curves, the default
+            will work so let's press enter. The calculator will then ask for
+            the second curve, with our second curve chosen by default.
+            Press enter.
+          </p><p>
+            The calculator will ask for a guess. We can
+            scroll left and right to be reasonably close to our desired intersection point
+            (useful if there are more than one intersection points) and press enter
+            to get the answer.
+          </p>
+          <h3>Answers</h3>
+          <p>
+            See if you are able to find answers
+            {@html math(`x=${x3.toFixed(3)}`)}
+            using your GC.
+          </p>
+          <h2>Solving inequalities graphically</h2>
           <h3>Question</h3>
           {@html body}
           <h3>Solution</h3>

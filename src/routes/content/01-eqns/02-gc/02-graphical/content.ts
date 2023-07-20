@@ -1,82 +1,53 @@
-import { alignStar, display, equation, newline, math, newParagraph } from 'mathlifier';
-import { Polynomial, Expression, Fraction, completeSquare, solveLinear, Term } from 'mathlify';
+import { display, math, newParagraph, strong } from 'mathlifier';
+import { bisection } from 'mathlify';
 
 // title
 const title = 'Graphical methods';
 
 // qn
-const a = 1,
-	b = -10,
-	c = 33,
-	e = 3,
-	d = -5;
-const num = new Polynomial([a, b, c]);
-const den = new Polynomial([e, d], { ascending: true });
-const sign = '<';
-// step 1
-const square = new Polynomial([a, new Fraction(b, 2 * a)]);
-const offset = new Fraction(b, 2).abs();
-const squareExp = `(${square})^2`;
-const completeSquareWorking = new Expression(squareExp, new Term(-1, `${offset}^2`), c);
-const completedSquare = completeSquare(num);
-const signAns = '>';
-const root = solveLinear(den);
+const x1 = bisection((x)=>4*Math.log(x)-x,1,2);
+const x2 = bisection((x)=>4*Math.log(x)-x,5,10);
 
-const qn = `Solve
-  ${display(`\\frac{${num}}{${den}} ${sign} 0.`)}
+const qn = `${newParagraph}
+	Solve the inequality
+  ${display(`4\\ln x < x.`)}
 `;
 
-const step0 = `Just like in the
-we make one side of our inequality zero by addition
-or subtraction.
-${newParagraph}
-The right side is already zero for this current example so let's
-move on to the next step.
+const step0 = `We will draw the graphs of
+	${math(`y=4\\ln x`)} and ${math(`y=x`)} using our GC.
+	Also observe that the graph of ${math(`y=4\\ln x`)}
+	has a vertical asymptote ${math(`x=0.`)}
+`; //TODO: add graph
+
+const step1 = `We will use the GC intersect solver to obtain the two
+	points of intersection. Their ${math(`x\\textrm{-coordinates}`)} are
+	${math(`x=${x1.toPrecision(3)}`)} and ${math(`x=${x2.toPrecision(3)}.`)}
 `;
 
-const step1 = `We observe that our numerator cannot be factorized because
-it has no real roots. We will then complete the square.
-${alignStar(`\\frac{${num}}{${den}}       &${sign} 0 \\\\
-\\frac{${completeSquareWorking}}{${den}}  &${sign} 0 \\\\
-\\frac{${completedSquare}}{${den}}        &${sign} 0
-`)}
-`;
-const step2 = `Upon completing the square, we are able to observe
-  that our expression on the numerator is always positive.
-  ${newParagraph}
-  inequality signs change depending on whether an expression is positive or
-  negative. Now that our numerator is always positive,
-  we can now divide both sides of our inequality by it.
-  ${equation(`\\frac{${completedSquare}}{${den}} ${sign} 0`)}
-  Since ${math(`${squareExp} \\geq 0`)} for all real values of ${math(`x,`)}
-  ${newline}${math(`${completedSquare}`)} is always positive.
-  ${newParagraph}From ${math(`(1),`)}
-  ${display(`\\frac{1}{${den}} ${sign} 0`)}
-`;
-
-const step3 = `We now use the regular number line approach to complete 
-  solving the question.
-  ${newParagraph}
-  ${display(`x ${signAns} ${root} \\; \\blacksquare`)}
-`;
-//! Number line
+const step2 = `To solve the inequality
+	${math(`4\\ln x < x,`)} we need to identify the regions in our
+	graph such that the graph of ${math(`y=4\\ln x`)} is
+	${strong(`below`)} the graph of ${math(`y=x.`)}
+	${newParagraph}
+	This occurs in the region between the asymptote and the first intersection point,
+	and also in the region to the right of the second intersection point.
+	${newParagraph}
+	This gives us the final answer
+	${display(`0 < x < ${x1.toPrecision(3)} \\quad \\textrm{ or }\\quad  x > ${x2.toPrecision(3)} \\; \\blacksquare`)}
+`;//TODO: Graph with shading
 
 const steps = [
 	{
-		title: 'Make one side zero',
+		title: 'Draw graphs',
 		body: step0,
 	},
 	{
-		title: 'Complete the square',
+		title: 'Get intersection points',
 		body: step1,
 	},
 	{
-		title: 'Prove that the quadratic is alway positive',
+		title: 'Solve the inequality',
 		body: step2,
-	},
-	{
-		title: 'Get final answer via the number line approach',
-		body: step3,
 	},
 ];
 
