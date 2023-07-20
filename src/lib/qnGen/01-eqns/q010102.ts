@@ -9,8 +9,6 @@ export function qnGen(vars: {
 	signCase: number;
 }): [string, string, string] {
 	const { b, c, d, e, signCase } = vars;
-}): [string, string, string, string] {
-	const { b, c, d, e, signCase } = vars;
 
 	// (x^2 + bx + c)(dx + e) sign 0
 
@@ -36,8 +34,8 @@ export function qnGen(vars: {
 	const root = solveLinear(den);
 	const ans = math(`x ${ansSign} ${root}`);
 	// alternative answer
-	const root2 = new Fraction(-e, d);
-	const ansGen = math(`x ${ansSign} ${root2}`);
+	//const root2 = new Fraction(-e, d);
+	//const ansGen = math(`x ${ansSign} ${root2}`);
 
 	//! generate solution
 	let soln = `${gatherStar(`\\frac{${numQn}}{${den}} ${sign} 0
@@ -51,5 +49,5 @@ export function qnGen(vars: {
   `;
 	// TODO: number line
 	soln += ans;
-	return [qn, ans, ansGen, soln];
+	return [qn, ans, soln];
 }
