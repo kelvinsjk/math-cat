@@ -16,7 +16,7 @@ const techniques = [
     url: '01-sle'
   },
   { 
-    title: 'Graphical equations and inequalities',
+    title: 'Graphical methods',
     url: '02-graphical'
   }
 ];

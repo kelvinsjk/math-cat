@@ -8,24 +8,37 @@
   
   const { title, examples } = content;
   // 0: Learn, 1: Example 1, 2: Practice 1, 3: Example 2, 4: Practice 2
-  let activeState = 1;
+  let activeState = 0;
   function setActiveState(active: number) {
     activeState = active;
   }
 
   // practice
-  import { vars } from './variables';
+  import { vars1, vars2 } from './variables';
   import { getRandomInt } from 'mathlify';
-  import { qnGen } from '$lib/qnGen/01-eqns/q010101';
-	import { tick } from 'svelte';
-  let variables = getNewVars();
-  $: [qn, ans, soln] = qnGen(variables);
+  import { qnGen1, qnGen2 } from '$lib/qnGen/01-eqns/q010201';
+  type Variables = typeof vars1[0];
+  type Variables2 = typeof vars2[0];
+  let variables1: Variables, variables2: Variables2;
+  variables1 = getNewVars1();
+  variables2 = getNewVars2();
+  $: [qn, _, ans, soln] = qnGen1(variables1);
+  $: [qn2, __, ans2, soln2] = qnGen2(variables2);
+  $: qns = [qn, qn2];
+  $: solns = [soln, soln2];
+  $: answers = [ans, ans2];
 
-  type Variables = typeof vars[0];
-  function getNewVars(): Variables {
-    const variables =  vars[getRandomInt(0, vars.length - 1)];
-    if (browser){
-      goto(`${$page.route.id}?vars=${variables.id}`, {replaceState: true, noScroll: true, keepFocus: true});
+  function getNewVars1(): Variables {
+    const variables =  vars1[getRandomInt(0, vars1.length - 1)];
+    if (browser && variables1 && variables2){
+      goto(`${$page.route.id}?vars1=${variables.id}&vars2=${variables2.id}`, {replaceState: true, noScroll: true, keepFocus: true});
+    }
+    return variables
+  }
+  function getNewVars2(): Variables2 {
+    const variables =  vars2[getRandomInt(0, vars2.length - 1)];
+    if (browser && variables1 && variables2){
+      goto(`${$page.route.id}?vars1=${variables.id}&vars2=${variables2.id}`, {replaceState: true, noScroll: true, keepFocus: true});
     }
     return variables
   }
@@ -38,6 +51,7 @@
     {id: 4, title: 'Practice 2'},
   ]
 	import { crossfade } from 'svelte/transition';
+	import { tick } from 'svelte';
 	const [send, receive] = crossfade({
 		duration: (d) => Math.sqrt(d * 1200),
 	});
@@ -141,7 +155,7 @@
         class="w-full place-content-stretch"
         transition:slide
       >
-        <h2>Example</h2>
+        <h2 class="mt-2">Example</h2>
         <h3>Question</h3>
         <div>
           {@html examples[(i-1)/2].question}
@@ -164,25 +178,79 @@
       </div>
     {/if}
     {/each}
+    <!--Practices-->
+    {#each [2,4] as i}
+    {#if activeState===i}
+      <div 
+        class="w-full place-content-stretch"
+        transition:slide
+      >
+        <h2 class="mt-2">Question</h2>
+        {#key [variables1,variables2]}
+        <p in:scale>
+          {@html qns[i/2-1]}
+        </p>
+        {/key}
+        <button 
+          class="btn btn-secondary"
+          on:click={() => {if(i===2){
+              variables1 = getNewVars1();
+            } else {
+              variables2 = getNewVars2();
+            };
+          }}
+        >
+          Generate new question
+          <img src="/icons/edit.svg" class="h-6 w-6 my-0" alt="practice"/>
+        </button>
+        <h2>Answer</h2>
+        {#key [variables1,variables2]}
+        <div in:scale>
+          {@html answers[i/2-1]}
+        </div>
+        {/key}
+        <h2>Solution</h2>
+        {#key [variables1,variables2]}
+        <div in:scale>
+          {@html solns[i/2-1]}
+        </div>
+        {/key}
+        <button 
+          class="btn btn-secondary"
+          on:click={() => {if(i===2){
+              variables1 = getNewVars1();
+            } else {
+              variables2 = getNewVars2();
+            };
+            setTimeout(() => document.getElementById('practice-tab')?.scrollIntoView(), 0);
+          }}
+        >
+          Generate new question
+          <img src="/icons/edit.svg" class="h-6 w-6 my-0" alt="practice"/>
+        </button>
+        {#if i===2}
+        <div class="my-4">
+          <button 
+            class="btn btn-primary"
+            on:click={async () => {setActiveState(3); await tick(); document.getElementById('practice-tab')?.scrollIntoView();}}
+          >
+            Word Problem Example
+            <img src="/icons/next-white.svg" class="h-6 w-6 my-0" alt="practice"/>
+          </button>
+        </div>
+        {/if}
+      </div>
+    {/if}
+    {/each}
   </div>
 
-  <h2>Extensions</h2>
-  <h3>What if our quadratic is not factorisable?</h3>
-  <p>
-    Maybe the quadratic still has roots, but they happen to be irrational so
-    we are unable to obtain nice factors.
-  </p>
-  <p>
-    In that case we can use our quadratic formula {@html math(`x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}`)}
-    to find the roots and resume with our number line approach.
-  </p>
   <h2>Next technique</h2>
   <p>
-    The next technique will tackle the case if our quadratic
-    is not factorizable because it has no real roots
+    The next technique will tackle the use of graphs
+    to solve equations and inequalities.
   </p>
-  <a class="btn btn-primary" href="./02-positive">
-    Positive Quadratics
+  <a class="btn btn-primary" href="./02-graphical">
+    Graphical Methods
     <img src="/icons/next-white.svg" class="h-6 w-6 my-0 text-white" alt="next"/>
   </a>
 </main>
