@@ -14,7 +14,7 @@
   //! change above
 
   
-  const { title, body, steps, nextSection, nextSectionTitle, nextSectionSlug } = content;
+  const { title, body, steps, nextSection, nextSectionTitle } = content;
   let learnActive = true;
   function setLearnActive(active: boolean) {
     learnActive = active;
@@ -247,11 +247,12 @@
   <p>
     {nextSection}
   </p>
-  <a class="btn btn-primary" href={`../${nextSectionSlug}`}>
+  <a class="btn btn-primary" href="../02-gc">
     {nextSectionTitle}
     <img src="/icons/next-white.svg" class="h-6 w-6 my-0 text-white" alt="next"/>
   </a>
 </main>
+
 
 <style>
   main {

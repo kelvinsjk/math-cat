@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { fly, scale } from 'svelte/transition';
+  import { scale } from 'svelte/transition';
   import { content } from './content';
   import {goto} from '$app/navigation';
   import {page} from '$app/stores';
 	import { browser } from '$app/environment';
+  import { send, receive } from '$lib/utils/crossfade';
   
   const {title, body,steps} = content;
   let learnActive = true;
@@ -43,7 +44,7 @@
       on:click={() => setLearnActive(true)}
     >
     {#if learnActive}
-      <div class="highlight" in:fly={{x: 200, duration: 500}}></div>
+      <div class="highlight" in:receive={{key: 0}} out:send={{key: 0}}></div>
     {/if}
       Learn
     </button> 
@@ -54,7 +55,7 @@
       id="practice-tab"
     >
     {#if !learnActive}
-      <div class="highlight" in:fly={{x: -200, duration: 500}}></div>
+      <div class="highlight" in:receive={{key: 0}} out:send={{key: 0}}></div>
     {/if}
       Practice
     </button> 

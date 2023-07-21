@@ -39,7 +39,6 @@ const nextSectionTitle = 'Miscellaneous';
 const nextSection = `In the next section we will learn how to use the
 	discriminant and the modulus function to solve questions.
 `;
-const nextSectionSlug = '03-misc';
 
 const steps = [
 	{
@@ -62,5 +61,4 @@ export const content = {
 	steps,
 	nextSection,
 	nextSectionTitle,
-	nextSectionSlug,
 };

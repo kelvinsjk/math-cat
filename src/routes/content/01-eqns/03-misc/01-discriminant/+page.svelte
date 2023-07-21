@@ -7,7 +7,7 @@
 	import { browser } from '$app/environment';
   import { send, receive } from '$lib/utils/crossfade';
   
-  const { title, body, steps } = content;
+  const { title, examples } = content;
   let learnActive = true;
   function setLearnActive(active: boolean) {
     learnActive = active;
@@ -16,10 +16,10 @@
   // practice
   import { vars } from './variables';
   import { getRandomInt } from 'mathlify';
-  import { qnGen } from '$lib/qnGen/01-eqns/q010101';
+  import { qnGen } from '$lib/qnGen/01-eqns/q010301';
 	import { tick } from 'svelte';
   let variables = getNewVars();
-  $: [qn, ans, soln] = qnGen(variables);
+  $: [qn, _, ans, soln] = qnGen(variables);
 
   type Variables = typeof vars[0];
   function getNewVars(): Variables {
@@ -69,9 +69,9 @@
         <div>
           <h2 class="mt-2">Example with comments</h2>
           <h3>Question</h3>
-          {@html body}
+          {@html examples}
           <h3>Solution</h3>
-          {#each steps as step,i}
+          <!-- {#each steps as step,i}
           <h4>Step {i}. {step.title}</h4>
           <div>
             {@html step.body}
@@ -82,7 +82,7 @@
             <div>{@html step.info}</div>
           </div>
           {/if}
-          {/each}
+          {/each} -->
           <h2>Practice</h2>
           <button 
             class="btn btn-secondary"

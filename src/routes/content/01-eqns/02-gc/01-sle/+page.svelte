@@ -1,10 +1,12 @@
 <script lang="ts">
-  import { crossfade, scale, slide } from 'svelte/transition';
-  import { content } from './content';
+  import { scale, slide } from 'svelte/transition';
 	import { align, math } from 'mathlifier';
   import { goto } from '$app/navigation';
   import { page } from '$app/stores';
 	import { browser } from '$app/environment';
+  import { send, receive } from '$lib/utils/crossfade';
+	import { tick } from 'svelte';
+  import { content } from './content';
   
   const { title, examples } = content;
   // 0: Learn, 1: Example 1, 2: Practice 1, 3: Example 2, 4: Practice 2
@@ -50,10 +52,6 @@
     {id: 3, title: 'Example 2',},
     {id: 4, title: 'Practice 2'},
   ]
-	import { tick } from 'svelte';
-	const [send, receive] = crossfade({
-		duration: (d) => Math.sqrt(d * 1200),
-	});
 </script>
 
 <svelte:head>
