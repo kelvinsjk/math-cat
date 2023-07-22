@@ -1,5 +1,5 @@
-import { alignStar, display, align, math, newParagraph, gatherStar, equation } from 'mathlifier';
-import { Polynomial, Expression, Term, cramersFrac, Fraction, solveQuadraticSurd } from 'mathlify';
+import { alignStar, display, math, newParagraph, gatherStar, } from 'mathlifier';
+import { Polynomial, Expression, solveQuadraticSurd } from 'mathlify';
 
 const title = 'The Discriminant';
 const overview = `The quadratic discriminant
@@ -10,7 +10,7 @@ const overview = `The quadratic discriminant
   find the range of values a variable can take (or cannot take).
 `;
 
-//!Set up
+//! Set up
 const a = 1,
 	b = -3,
 	c = 8,
@@ -26,16 +26,14 @@ const [cy, by, ay] = yPoly.coeffs;
 const [y1, y2] = solveQuadraticSurd(yPoly);
 const [rational, surd] = y2.terms;
 
-//!Question
+//! Question
 const question = `It is given that
   ${display(`y = \\frac{${num}}{${den}}`)}
   Without using a calculator, find the set of values that
   ${math(`y`)} can take.
 `;
 
-//! Example 1
-const ans = new Polynomial([a, b, c, d]);
-
+//! Steps
 const steps = [
 	{
 		title: 'Rearrange the equation to get a quadratic',

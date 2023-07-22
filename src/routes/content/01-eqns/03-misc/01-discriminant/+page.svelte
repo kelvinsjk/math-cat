@@ -172,10 +172,10 @@
   <h2>Next technique</h2>
   <p>
     The next technique will tackle working with the modulus
-    function {@html math(`| \\cdot |`)}
+    function {@html math(`| x |.`)}
   </p>
-  <a class="btn btn-primary" href="./02-positive">
-    Positive Quadratics
+  <a class="btn btn-primary" href="./02-modulus">
+    Modulus function
     <img src="/icons/next-white.svg" class="h-6 w-6 my-0 text-white" alt="next"/>
   </a>
 </main>
