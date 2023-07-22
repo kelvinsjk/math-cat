@@ -1,131 +1,113 @@
-import { alignStar, display, align, math, newParagraph, gatherStar, equation, } from "mathlifier"
-import { Polynomial, Expression, Term, cramersFrac, Fraction } from "mathlify";
-
+import { alignStar, display, align, math, newParagraph, gatherStar, equation } from 'mathlifier';
+import { Polynomial, Expression, Term, cramersFrac, Fraction, solveQuadraticSurd } from 'mathlify';
 
 const title = 'The Discriminant';
+const overview = `The quadratic discriminant
+  ${math(`b^2 - 4ac`)} allows us to determine the number
+  of distinct roots in a quadratic.
+  ${newParagraph}
+  This can help us in some questions where we have to
+  find the range of values a variable can take (or cannot take).
+`;
+
+//!Set up
+const a = 1,
+	b = -3,
+	c = 8,
+	d = 1,
+	e = -4;
+const num = new Polynomial([a, b, c]);
+const den = new Polynomial([d, e]);
+const B = new Polynomial([b, -d], { variable: 'y', ascending: true });
+const C = new Polynomial([c, -e], { variable: 'y', ascending: true });
+const quad = new Expression(`x^2`, `(${B})x`, `(${C})`);
+const yPoly = B.square().minus(C.times(4)).changeAscending(false);
+const [cy, by, ay] = yPoly.coeffs;
+const [y1, y2] = solveQuadraticSurd(yPoly);
+const [rational, surd] = y2.terms;
+
+//!Question
+const question = `It is given that
+  ${display(`y = \\frac{${num}}{${den}}`)}
+  Without using a calculator, find the set of values that
+  ${math(`y`)} can take.
+`;
 
 //! Example 1
-const x1 = -1, y1 = 8;
-const x2 = 1, y2 = -32;
-const turningX = -1;
-const integral_0_1 = -19;
-const [a,b,c,d] = cramersFrac(
-  x1**3, x1**2, x1, 1, y1,
-  x2**3, x2**2, x2, 1, y2,
-  3*turningX**2, 2*turningX, 1, 0, 0,
-  new Fraction(1,4), new Fraction(1,3), new Fraction(1,2), 1, integral_0_1
-);
-const exp1 = new Expression(new Term(x1**3, 'a'), new Term(x1**2, 'b'), new Term(x1, 'c'), new Term(1, 'd'));
-const exp2 = new Expression(new Term(x2**3, 'a'), new Term(x2**2, 'b'), new Term(x2, 'c'), new Term(1, 'd'));
-const exp3 = new Expression(new Term(3*turningX**2, 'a'), new Term(2*turningX, 'b'), new Term(1, 'c'));
-const ans = new Polynomial([a,b,c,d]);
-//! Example 2
-const a1 = 11, b1 = 4, c1 = 2, p1 = '144.35';
-const a2 = 9, b2 = 8, c2 = 6, p2 = '213.45';
-const a3 = 10, b3 = 7, c3 = 2, p3 = '169.40';
-const [s,t,p] = cramersFrac(
-  a1, b1, c1, new Fraction(Number(p1.slice(4)),100).plus(Number(p1.slice(0,3))),
-  a2, b2, c2, new Fraction(Number(p2.slice(4)),100).plus(Number(p2.slice(0,3))),
-  a3, b3, c3, new Fraction(Number(p3.slice(4)),100).plus(Number(p3.slice(0,3))),
-);
+const ans = new Polynomial([a, b, c, d]);
 
-
-const examples = [
-  {
-    question: `${math(`f(x)`)} is a cubic polynomial.
-      The graph of ${math(`y=f(x)`)} passes through the points
-      ${math(`(${x1},${y1})`)} and ${math(`(${x2},${y2}).`)}
-      The graph has a turning point at ${math(`x = ${turningX}`)},
-      and
-      ${math(`\\displaystyle \\int_0^1 f(x) \\; \\mathrm{d}x = ${integral_0_1}.`)}
-      ${newParagraph}
-      Find an expression for ${math(`f(x)`)} in terms of ${math(`x.`)}
+const steps = [
+	{
+		title: 'Rearrange the equation to get a quadratic',
+		body: `Since we are not allowed to use a calculator, we are limited
+      in the methods we can use. We will cross multiply and move all
+      terms to one side.
+      ${gatherStar(`y = \\frac{${num}}{${den}}
+        \\\\ y(${den}) = ${num}
+        \\\\ ${quad} = 0
+      `)}
+      We can view this as a quadratic in ${math(`x`)}
+      with "coefficients" ${math(`1,`)}
+      ${math(`-3-y`)} and ${math(`8+4y`)}
     `,
-    solution: [
-      { 
-        title: 'Set up the polynomial expression',
-        body: `Since ${math(`f(x)`)} is a cubic polynomial
-          ${display(`f(x) = ax^3 + bx^2 + cx + d`)}
-          where ${math(`a,b,c`)} and ${math(`d`)} are constants.
-        `
-      },
-      {
-        title: 'Set up the system of equations',
-        body: `Since the graph of ${math(`y=f(x)`)} passes through the points
-          ${math(`(${x1},${y1})`)} and ${math(`(${x2},${y2}),`)}
-          ${alignStar(`a(${x1})^3 + b(${x1})^2 + c(${x1}) + d &= ${y1}
-            \\\\ a(${x2})^3 + b(${x2})^2 + c(${x2}) + d       &= ${y2}
-          `)}
-          Simplifying gives us the first two equations
-          ${align(`${exp1} &= ${y1} \\\\ ${exp2} &= ${y2}`)}
-          We then find the derivative
-          ${gatherStar(`\\frac{\\mathrm{d}y}{\\mathrm{d}x} = 3ax^2 + 2bx + c
-            \\\\ \\text{When } x = ${turningX}, \\frac{\\mathrm{d}y}{\\mathrm{d}x} = 0
-            \\\\ 3a(${turningX})^2 + 2b(${turningX}) + c = 0
-          `)}
-          This gives us our third equation
-          ${equation(`${exp3} = 0`)}
-          Integration will give us our final equation
-          ${gatherStar(`\\int_0^1 ax^3 + bx^2 + cx + d \\; \\mathrm{d}x = ${integral_0_1}
-            \\\\ \\left[ \\frac{a}{4}x^4 + \\frac{b}{3}x^3 + \\frac{c}{2}x^2 + dx \\right]_0^1 = ${integral_0_1}
-          `)}
-          ${equation(`\\frac{a}{4} + \\frac{b}{3} + \\frac{c}{2} + d = ${integral_0_1}`)}
-        `
-      },
-      {
-        title: 'Solve the system of equations using a GC',
-        body: `Solving equations ${math(`(1), (2), (3)`)} and
-          ${math(`(4),`)}
-          ${display(`a=${a}, \\; b=${b}, \\; c=${c}, \\; d=${d}`)}
-          This gives us our final solution
-          ${display(`f(x) = ${ans} \\; \\blacksquare`)}
-        `
-      }
-    ]
-  },
-  {
-    question: `Tickets for a school concert are priced differently depending on whether the attendee is a student, a teacher, or a parent.
-      Three groups of people, ${math(`A, B`)} and ${math(`C`)}
-      attend the concert.
-      ${newParagraph}
-      There are ${math(`${a1}`)} students, ${math(`${b1}`)} teachers and ${math(`${c1}`)} parents in group ${math(`A`)}
-      and the total cost of their tickets is ${math(`\\$${p1}.`)}
-      ${newParagraph}
-      There are ${math(`${a2}`)} students, ${math(`${b2}`)} teachers and ${math(`${c2}`)} parents in group ${math(`B`)}
-      and the total cost of their tickets is ${math(`\\$${p2}.`)}
-      ${newParagraph}
-      There are ${math(`${a3}`)} students, ${math(`${b3}`)} teachers and ${math(`${c3}`)} parents in group ${math(`A`)}
-      and the total cost of their tickets is ${math(`\\$${p3}.`)}
-      ${newParagraph}
-      Find the price of each student, teacher and parent ticket.
+	},
+	{
+		title: 'Use the discriminant',
+		//TODO: graph
+		body: `If we approach this question graphically, we can see that
+			the set of values that ${math(`y`)} can take correspond
+			to regions where its graph cut a horizontal line
+			either once or twice.
+			${newParagraph}
+			The discriminant is useful in such situations.
+			${display(`${quad} = 0`)}
+			For the set of values that ${math(`y`)} can take,
+			the discriminant
+			${gatherStar(`b^2 - 4ac \\geq 0
+				\\\\ (${B})^2 - 4(${a})(${C}) \\geq 0
+				\\\\ ${yPoly} \\geq 0
+			`)}
     `,
-    solution: [
-      { 
-        title: 'Set up the unknowns',
-        body: `Let ${math(`s, t`)} and ${math(`p`)} represent the price of each
-          student, teacher and parent ticket respectively.
-        `
-      },
-      {
-        title: 'Set up the system of equations',
-        body: `${align(`${a1}s + ${b1}t + ${c1}p &= ${p1}
-            \\\\ ${a2}s + ${b2}t + ${c2}p &= ${p2}
-            \\\\ ${a3}s + ${b3}t + ${c3}p &= ${p3}
-          `)}
-        `
-      },
-      {
-        title: 'Solve the system of equations using a GC',
-        body: `Solving equations ${math(`(1), (2)`)} and ${math(`(3)`)} using a GC, 
-          ${display(`s=${s.toFixed(2)}, \\; t=${t.toFixed(2)}, \\; p=${p.toFixed(2)} \\; \\blacksquare`)}
-        `
-      }
-    ]
-  },
-
-]
+	},
+	{
+		title: `Use the quadratic formula`,
+		body: `Unfortunately we are not able to factorize 
+		our quadratic ${math(`${yPoly}`)} with integers so we
+		will have to use our quadratic formula.
+		${newParagraph}
+		The roots to ${math(`${yPoly} = 0`)} are 
+		${alignStar(`y &= \\frac{-(${by}) \\pm \\sqrt{(${by})^2 - 4(${ay})(${cy})}}{2(${ay})}
+		\\\\ &= ${rational} \\pm ${surd}
+		`)}
+    `,
+	},
+	{
+		//TODO: inequalities graph
+		title: `Solve the quadratic inequality in ${math(`y`)}`,
+		body: `Solving the quadratic inequality
+			${math(`${yPoly} \\geq 0`)}
+			gives us
+			${display(`y \\leq ${y1} \\; \\textrm{ or } \\; y \\geq ${y2}`)} 
+		`,
+	},
+	{
+		//TODO: link to functions
+		title: `Final answer in set notation`,
+		body: `The question asks us for a set so we will write our inequality
+			range from the previous step in set notation. We can use the
+			open/close interval notation from the functions topic.
+			${newParagraph}
+			Final solution:
+			${display(
+				`\\left(-\\infty, ${y1} \\; \\right] \\cup \\left[ \\; ${y2}, \\infty\\right) \\; \\blacksquare`,
+			)}
+		`,
+	},
+];
 
 export const content = {
-  title,
-  examples
-}
+	title,
+	overview,
+	question,
+	steps,
+};
