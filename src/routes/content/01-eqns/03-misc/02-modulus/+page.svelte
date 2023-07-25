@@ -8,17 +8,21 @@
   import { vars } from './variables';
   import { bisection, getRandomInt } from 'mathlify';
 	import { tick } from 'svelte';
-	import { display, math } from 'mathlifier';
+	import { align, display, math } from 'mathlifier';
   //! change below
-  import { qnGen } from '$lib/qnGen/01-eqns/q010202';
+  import { qnGen } from '$lib/qnGen/01-eqns/q010302';
   //! change above
 
   
-  const { title, body, steps, nextSection, nextSectionTitle } = content;
+  const { title, question, steps, nextSection, nextSectionTitle } = content;
   let learnActive = true;
   function setLearnActive(active: boolean) {
     learnActive = active;
   }
+
+  const eqns = math(`x-1 &= 2
+    \\\\ -(x-1) &= 2
+  `)
 
   const x1 = bisection((x)=>Math.exp(-x)-5/(x**2+1)+1, -1, 0);
   const x2 = bisection((x)=>Math.exp(-x)-5/(x**2+1)+1, 1, 2);
@@ -79,108 +83,84 @@
         <div>
           <h2 class="mt-2">Overview</h2>
           <p>
-            Some equations and inequalities like
-            {@html math(`\\mathrm{e}^x = x + 5`)}
-            or
-            {@html math(`\\ln x > 5 - x`)}
-            are impossible or impractical to solve by algebraic methods so
-            we use use <b>graphical</b> methods using a GC.
+            The modulus function,
+            {@html math(`|x|,`)} is a function
+            that makes a number or variable "positive"
+            (non-negative if we want to be precise).
+            For example,
+            {@html math(`|3| = 3`)} and
+            {@html math(`\\lvert -3 \\rvert  = 3`)}.
           </p>
           <p>
-            This is sometimes also called <b>numerical</b> methods
-            as we will be getting numerical answers as opposed to
-            algebraic quantities.
-          </p>
-          <h2>Zero solver</h2>
-          <p>
-            The "zero" solver helps us find where a curve cuts the
-            {@html math(`x\\textrm{-axis}.`)}
-          </p>
-          <h3>Example</h3>
-          <p>
-            Solve the equation
-          </p>
-            {@html display(`e^{-x} - \\frac{5}{x^2+1} + 1 = 0.`)}
-          <h3>Solution</h3>
-          <p>
-            We will use our GC to plot the graph of
-            {@html math(`y = e^{-x} - \\frac{5}{x^2+1} + 1.`)}
+            The algebraic way to approach
+            {@html math(`|x|`)} is to consider two cases:
+            if {@html math(`x`)} is positive or zero, then
+            {@html math(`|x| = x.`)} On the other hand, if
+            {@html math(`x`)} is negative, then
+            {@html math(`-x`)} will be positive so
+            {@html math(`|x| = -x`)}.
           </p>
           <p>
-            We should see two solutions where the curve cuts the 
-            {@html math(`x\\textrm{-axis}.`)} We will get them
-            one at a time.
+            Applying the modulus function to
+            {@html math(`f(x),`)} the aforementioned
+            behavior is summarized by
+          </p>
+            {@html display(`\\lvert f(x) \\rvert = \\begin{cases} f(x) & \\textrm{if } f(x) \\geq 0 \\\\ -f(x) & \\textrm{if } f(x) < 0 \\end{cases}`)}
+          <div class="alert">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div>
+              The modulus function is sometimes also called
+              the <b>absolute</b> value function.
+              You can key it in a TI-84 class graphing calculator
+              under <kbd class="kbd kbd-sm">MATH</kbd>,
+              scrolling right to <kbd class="kbd kbd-sm">NUM</kbd>
+              and selecting <kbd class="kbd kbd-sm">1: abs(</kbd>.
+            </div>
+          </div>
+          <!--Equations-->
+          <h2>Solving equations involving the modulus</h2>
           <p>
-            On the TI-84 class of calculators, we will go to
-            <kbd class="kbd kbd-sm">calc</kbd> (2nd followed by the
-            trace, the fourth button on the top row) and then
-            <kbd class="kbd kbd-sm">2: ZERO</kbd>.
+            We will use the positive and negative cases to
+            solve equations involving the modulus function.
           </p>
           <p>
-            The calculator will first ask for the lower bound. 
-            We will scroll to a point left of the root we want to find.
-            Press enter and the calculator will ask for the upper bound.
-            Now scroll past the root and to a point to the right of it and
-            press enter.
-          </p><p>
-            Finally, the calculator will ask for a guess. We can
-            just click enter immediately as long as the previous two steps are done
-            correctly.
+            For example, to solve the equation
           </p>
-          <h3>Answers</h3>
+            {@html display(`|x-1| = 2,`)}
+          <div>
+            we consider two cases: 
+          </div>
+            {@html align(`x-1 &= 2
+              \\\\ -(x-1) &= 2
+            `)}
+          <div>
+            giving us the final solution of
+            {@html math(`x = 3`)} or {@html math(`x = -1.`)}
+          </div>
+          <!--Inequalities-->
+          <h2>Solving inequalities involving the modulus</h2>
           <p>
-            See if you are able to find the two answers
-            {@html math(`x=${x1.toFixed(3)}`)} and {@html math(`x=${x2.toFixed(2)}`)}
-            using your GC.
-          </p>
-          <h2>Intersect solver</h2>
-          <p>
-            The "intersect" solver helps us find where two graphs intersect.
-          </p>
-          <h3>Example</h3>
-          <p>
-            Solve the equation
-          </p>
-            {@html display(`e^{-x} - \\frac{5}{x^2+1} + 1 = 3x.`)}
-          <h3>Solution</h3>
-          <p>
-            In addition to our graph of 
-            {@html math(`y = e^{-x} - \\frac{5}{x^2+1} + 1`)}
-            from the previous example,
-            we will also plot the graph of {@html math(`y=3x.`)}
+            To solve inequalities involving the modulus function,
+            we will use the earlier technique of using
+            <a class="link" href="../02-gc/02-graphical">
+              graphical methods.
+            </a>
+            Find the intersection between the graphs will be necessary.
+            We can use our GC for most cases, but for cases where an
+            algebraic method is necessary (eg. for exact solutions of 
+            solutions involving unknowns), we will use the
+            method involving positive and negative cases shown above.            
           </p>
           <p>
-            We should see one intersection between the two.
-          <p>
-            On the TI-84 class of calculators, we will go to
-            <kbd class="kbd kbd-sm">calc</kbd> (2nd followed by the
-            trace, the fourth button on the top row) and then
-            <kbd class="kbd kbd-sm">5: INTERSECT</kbd>.
+            We will illustrate the combination of these techniques with
+            the following example.
           </p>
-          <p>
-            The calculator will ask for the first curve. You can scroll up
-            and down to select it. But if we only have two curves, the default
-            will work so let's press enter. The calculator will then ask for
-            the second curve, with our second curve chosen by default.
-            Press enter.
-          </p><p>
-            The calculator will ask for a guess. We can
-            scroll left and right to be reasonably close to our desired intersection point
-            (useful if there are more than one intersection points) and press enter
-            to get the answer.
-          </p>
-          <h3>Answers</h3>
-          <p>
-            See if you are able to find answers
-            {@html math(`x=${x3.toFixed(3)}`)}
-            using your GC.
-          </p>
-          <h2>Solving inequalities graphically</h2>
+          <h2>Example with comments</h2>
           <h3>Question</h3>
-          {@html body}
+          {@html question}
           <h3>Solution</h3>
           {#each steps as step,i}
-          <h4>Step {i}. {step.title}</h4>
+          <h4>Step {i+1}. {@html step.title}</h4>
           <div>
             {@html step.body}
           </div>
@@ -243,16 +223,21 @@
       </div>
     </div>
   </div>
-  <h2>Next Section</h2>
+  <h2>End of chapter</h2>
   <p>
     {nextSection}
   </p>
-  <a class="btn btn-primary" href="../02-gc">
-    {nextSectionTitle}
-    <img src="/icons/next-white.svg" class="h-6 w-6 my-0 text-white" alt="next"/>
-  </a>
+  <div class="flex gap-2 flex-wrap">
+    <a class="btn btn-primary btn-outline" href="/">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+      Home
+    </a>
+    <a class="btn btn-primary" href="/content/02-functions">
+      {nextSectionTitle}
+      <img src="/icons/next-white.svg" class="h-6 w-6 my-0 text-white" alt="next"/>
+    </a>
+  </div>
 </main>
-
 
 <style>
   main {

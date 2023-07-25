@@ -3,7 +3,6 @@
 	const {title, body, techniques} = content;
 	const currentSectionUrl = '03-misc';
 	import {page} from '$app/stores';
-	console.log($page.url);
 </script>
 
 <svelte:head>
