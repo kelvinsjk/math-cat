@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { math } from "mathlifier";
+
   const topics = [
     {
       title: 'Equations and inequalities',
@@ -6,6 +8,23 @@
         {
           title: 'Rational inequalities',
           url: '01-eqns/01-inequalities'
+        },
+        { 
+          title: 'GC methods',
+          url: '01-eqns/02-gc'
+        },
+        {
+          title: 'Miscellaneous',
+          url: '01-eqns/03-misc'
+        }
+      ]
+    },
+    {
+      title: 'Integration Techniques',
+      sections: [
+        {
+          title: `${math(`f'(x)`)} formulas`,
+          url: '09-integration/01-fprime'
         },
         { 
           title: 'GC methods',
@@ -54,7 +73,7 @@
     <div class="collapse-content bg-base-100 text-sm">
       <ul class="steps steps-vertical">
         {#each topic.sections as section}
-        <li class="step step-secondary"><a href={`/content/${section.url}`}>{section.title}</a></li>
+        <li class="step step-secondary"><a href={`/content/${section.url}`}>{@html section.title}</a></li>
         {/each}
       </ul>
     </div>
