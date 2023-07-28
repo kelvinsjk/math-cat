@@ -1,4 +1,4 @@
-import { display, } from "mathlifier"
+import { display, math } from "mathlifier"
 
 const title = 'Rational inequalities';
 
@@ -24,3 +24,35 @@ export const content = {
   body,
   techniques
 }
+
+import { techniques as techniques2 } from './02-rational/content';
+//import { techniques as techniques2 } from './02-gc/content';
+//import { techniques as techniques3 } from './03-misc/content';
+
+export const sections = [
+  { 
+    title: `${math(`f'(x)`)} formulas`,
+    slug: '01-f-prime',
+    techniques: []
+  },
+  { 
+    title: 'Rational-like integrals',
+    slug: '02-rational',
+    techniques: techniques2
+  },
+  {
+    title: 'Trigonometric integrals',
+    slug: '03-trigo',
+    techniques: []
+  },
+  {
+    title: 'Integration by parts',
+    slug: '04-by-parts',
+    techniques: []
+  },
+  {
+    title: 'Substitution',
+    slug: '05-substitution',
+    techniques: []
+  }
+]

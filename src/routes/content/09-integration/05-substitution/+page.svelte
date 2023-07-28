@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { content } from './content';
 	const {title, body, techniques} = content;
+	const currentSectionUrl = '03-misc';
 	import {page} from '$app/stores';
 </script>
 
@@ -16,7 +17,7 @@
 	<h2>Techniques</h2>
 	<ul class="steps steps-vertical">
 		{#each techniques as technique}
-		<li class="step step-secondary"><a href={`${$page.url}/${technique.slug}`}>{technique.title}</a></li>
+		<li class="step step-secondary"><a href={`${$page.url}/${technique.url}`}>{technique.title}</a></li>
 		{/each}
 	</ul>
 </main>

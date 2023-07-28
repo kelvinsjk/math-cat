@@ -69,10 +69,11 @@ function case1Gen(case1: number,
 			: new Expression(b1, new Term(-1, xA));
 		const fPrime = a1===2 ? `x` : `x^{${a1-1}}`;
 		const qn = math(`\\displaystyle \\int \\frac{${fPrime}}{${fx}} \\, \\mathrm{d}x`);
-		const ans = math(`\\frac{1}{${a1}} \\ln ${modulus(`${fx}`, a1, signCase1)} + c`);
+		const sign = signCase1===2 ? '-' : '';
+		const ans = math(`${sign} \\frac{1}{${a1}} \\ln ${modulus(`${fx}`, a1, signCase1)} + c`);
 		const soln = alignStar(`& \\int \\frac{${fPrime}}{${fx}} \\, \\mathrm{d}x
-			\\\\ &= \\frac{1}{${a1}} \\int \\frac{${a1}${fPrime}}{${fx}} \\, \\mathrm{d}x
-			\\\\ &= \\frac{1}{${a1}} \\ln ${modulus(`${fx}`, a1, signCase1)} + c \\; \\blacksquare
+			\\\\ &= ${sign}\\frac{1}{${a1}} \\int \\frac{${sign}${a1}${fPrime}}{${fx}} \\, \\mathrm{d}x
+			\\\\ &= ${sign}\\frac{1}{${a1}} \\ln ${modulus(`${fx}`, a1, signCase1)} + c \\; \\blacksquare
 		`)
 		return [qn, ans, soln];
 	}
@@ -80,7 +81,7 @@ function case1Gen(case1: number,
 	const fx = new Polynomial([a1,b1,c1]);
 	const fPrime = fx.differentiate()
 	const fPrimeSimplified = fPrime.simplify();
-	const multiple = fPrimeSimplified.coeffs[0].divide(fPrime.coeffs[0]);
+	const multiple = fPrimeSimplified.coeffs[1].divide(fPrime.coeffs[1]);
 	const qn = math(`\\displaystyle \\int \\frac{${fPrimeSimplified}}{${fx}} \\, \\mathrm{d}x`);
 	const alwaysPositive = new Fraction(b1).square().minus(new Fraction(4).times(a1).times(c1)).isLessThan(0) ? 0 : 1;
 	const lnTerm = new Term(multiple, `\\ln ${modulus(`${fx}`,2,alwaysPositive)}`);

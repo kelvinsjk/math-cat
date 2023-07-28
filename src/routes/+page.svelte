@@ -1,58 +1,19 @@
 <script lang="ts">
 	import { math } from "mathlifier";
 
+  import { sections as section1 } from "./content/01-eqns/content";
+  import { sections as section9 } from "./content/09-integration/content";
   const topics = [
     {
       title: 'Equations and inequalities',
-      sections: [
-        {
-          title: 'Rational inequalities',
-          url: '01-eqns/01-inequalities'
-        },
-        { 
-          title: 'GC methods',
-          url: '01-eqns/02-gc'
-        },
-        {
-          title: 'Miscellaneous',
-          url: '01-eqns/03-misc'
-        }
-      ]
+      slug: '01-eqns',
+      sections: section1
     },
+    //
     {
-      title: 'Integration Techniques',
-      sections: [
-        {
-          title: `${math(`f'(x)`)} formulas`,
-          url: '09-integration/01-fprime'
-        },
-        { 
-          title: 'GC methods',
-          url: '01-eqns/02-gc'
-        },
-        {
-          title: 'Miscellaneous',
-          url: '01-eqns/03-misc'
-        }
-      ]
-    },
-    // others
-    {
-      title: 'Complex numbers',
-      sections: [
-        {
-          title: 'Cartesian basics',
-          url: '14-complex/01-cartesian'
-        },
-        {
-          title: 'Solving polynomials',
-          url: '14-complex/02-polynomials'
-        },
-        {
-          title: 'Polar form',
-          url: '14-complex/03-polar'
-        }
-      ]
+      title: 'Integration',
+      slug: '09-integration',
+      sections: section9
     }
   ]
 </script>
@@ -71,9 +32,27 @@
     <input type="radio" name="topics-accordion" />
     <div class="collapse-title font-bold">{topic.title}</div>
     <div class="collapse-content bg-base-100 text-sm">
-      <ul class="steps steps-vertical">
+      <ul class="steps steps-vertical outer">
         {#each topic.sections as section}
-        <li class="step step-secondary"><a href={`/content/${section.url}`}>{@html section.title}</a></li>
+        <li class="step step-secondary outer">
+          <div class="self-start">
+            <div>
+              <a href={`/content/${topic.slug}/${section.slug}`}>{@html section.title}</a>
+            </div>
+            {#if section.techniques.length > 1}
+            <div>
+              <ul class="steps steps-vertical">
+                {#each section.techniques as technique}
+                <li class="step step-primary">
+                  <a href={`/content/${topic.slug}/${section.slug}/${technique.slug}`}>{@html technique.title}</a>
+                </li>
+                {/each}
+              </ul>
+            </div>
+            {/if}
+          </div>
+          
+        </li>
         {/each}
       </ul>
     </div>
@@ -89,5 +68,37 @@
   .steps {
     margin: 0;
     padding: 0;
+  }
+  .steps .step {
+    text-align: start;
+  }
+  .step.outer::after {
+    place-self: start;
+    border: 1px hsl(var(--p) / 75%) solid;
+  }
+  .step.outer::before {
+    content: '';
+    background-color: hsl(var(--s) / var(--tw-bg-opacity));
+    height: 100%;
+    transform: translate(-50%, 10%);
+    border: 1px hsl(var(--p) / 75%) solid;
+  }
+  .step.outer:last-child::before {
+    height: 95%;
+    transform: translate(-50%, 0%);
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+  }
+  li.step {
+    margin: 0rem;
+  }
+  ul > li.step:first-child {
+    margin-top: 0.5rem;
+  }
+  li.step.outer>div>div:first-child {
+    margin-top:6.875px;
+  }
+  .steps-vertical.outer {
+    grid-auto-rows: auto;
   }
 </style>

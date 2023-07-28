@@ -8,14 +8,14 @@ ${display(`\\frac{x^2 + 5x + 9}{x-1} < 1`)}
 algebraically.
 `;
 
-const techniques = [
+export const techniques = [
   {
     title: 'Factorisable expressions',
-    url: '01-factorisable'
+    slug: '01-factorisable'
   },
   { 
     title: 'Positive quadratics',
-    url: '02-positive'
+    slug: '02-positive'
   }
 ];
 

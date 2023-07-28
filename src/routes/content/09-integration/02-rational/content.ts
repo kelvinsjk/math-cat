@@ -1,23 +1,29 @@
-import { alignStar, display, } from "mathlifier"
+import { alignStar, display, gatherStar, } from "mathlifier"
 
-const title = 'GC methods';
+const title = 'Rational-like integrals';
 
-const body = `In this section, we will learn how to solve equations and inequalities
-with the help of a graphing calculator. They include systems of linear equations
-such as ${alignStar(`x+y+z &= 2 \\\\ 2x - 3y + z &= -1 \\\\ x - y + 2z &= 0`)} and
-solving inequalities such as
-${display(`2\\ln x + 1 > x`)}
-graphically.
+const body = `In this section, we will learn how to integrate fractions
+such as ${gatherStar(`\\int \\frac{1}{x^2 \\pm a^2} \\, \\mathrm{d}x
+  \\\\ \\int \\frac{1}{\\sqrt{a^2 - x^2}} \\, \\mathrm{d}x
+  \\\\ \\int \\frac{1}{a^2 - x^2} \\, \\mathrm{d}x
+`)} and
+${gatherStar(`\\int \\frac{1}{x^2-x+1} \\, \\mathrm{d}x
+  \\\\ \\int \\frac{1}{(x-2)(x^2+1)} \\, \\mathrm{d}x
+`)}
 `;
 
-const techniques = [
+export const techniques = [
   {
-    title: 'System of linear equations',
-    url: '01-sle'
+    title: 'Formulas in List MF26',
+    slug: '01-mf26'
   },
   { 
-    title: 'Graphical methods',
-    url: '02-graphical'
+    title: 'Completing the square',
+    slug: '02-complete-square'
+  },
+  {
+    title: 'Partial fractions',
+    slug: '03-partial-fractions'
   }
 ];
 

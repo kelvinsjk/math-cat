@@ -10,14 +10,14 @@ ${display(`2\\ln x + 1 > x`)}
 graphically.
 `;
 
-const techniques = [
+export const techniques = [
   {
     title: 'System of linear equations',
-    url: '01-sle'
+    slug: '01-sle'
   },
   { 
     title: 'Graphical methods',
-    url: '02-graphical'
+    slug: '02-graphical'
   }
 ];
 

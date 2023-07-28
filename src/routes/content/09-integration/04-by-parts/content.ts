@@ -6,14 +6,14 @@ const body = `In this section, we will learn how to use the discriminant to solv
   questions. We will also handle equations and inequalities involving the modulus function.
 `;
 
-export const techniques = [
+const techniques = [
   {
     title: 'Discriminant',
-    slug: '01-discriminant'
+    url: '01-discriminant'
   },
   { 
     title: 'Modulus',
-    slug: '02-modulus'
+    url: '02-modulus'
   }
 ];
 

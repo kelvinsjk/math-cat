@@ -1,12 +1,13 @@
 <script lang="ts">
   import { scale } from 'svelte/transition';
   import { content } from './content';
-  import {goto} from '$app/navigation';
-  import {page} from '$app/stores';
+	import { math } from 'mathlifier';
+  import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
 	import { browser } from '$app/environment';
   import { send, receive } from '$lib/utils/crossfade';
   
-  const {title, body,steps} = content;
+  const { title, question, steps, overview } = content;
   let learnActive = true;
   function setLearnActive(active: boolean) {
     learnActive = active;
@@ -15,10 +16,10 @@
   // practice
   import { vars } from './variables';
   import { getRandomInt } from 'mathlify';
-  import { qnGen } from '$lib/qnGen/01-eqns/q010102';
+  import { qnGen } from '$lib/qnGen/01-eqns/q010301';
 	import { tick } from 'svelte';
   let variables = getNewVars();
-  $: [qn, ans, soln] = qnGen(variables);
+  $: [qn, _, ans, soln] = qnGen(variables);
 
   type Variables = typeof vars[0];
   function getNewVars(): Variables {
@@ -31,12 +32,13 @@
 </script>
 
 <svelte:head>
-  <title>Positive Quadratics</title>
+  <title>{title}</title>
 </svelte:head>
 
 
 <main class="prose">
   <h1>{title}</h1>
+  <!--!Tabs-->
   <div class="tabs">
     <button
       class="tab tab-lifted"
@@ -60,20 +62,22 @@
       Practice
     </button> 
   </div>
+  <!--!Content-->
   <div class="body">
-    <div
-      class="swap swap-flip w-full place-content-stretch"
-      class:swap-active={learnActive}
-    >
+    <label class="swap swap-flip w-full place-content-stretch">
+      <input type="checkbox" disabled checked={learnActive} />
+      <!--!Learn Tab-->
       <div class="swap-on">
         {#if learnActive}
         <div>
-          <h2 class="mt-2">Example with comments</h2>
+          <h2 class="mt-2">Overview</h2>
+          {@html overview}
+          <h2>Example with comments</h2>
           <h3>Question</h3>
-          {@html body}
+          {@html question}
           <h3>Solution</h3>
           {#each steps as step,i}
-          <h4>Step {i}. {step.title}</h4>
+          <h4>Step {i+1}. {@html step.title}</h4>
           <div>
             {@html step.body}
           </div>
@@ -127,23 +131,51 @@
           {/key}
           <button 
             class="btn btn-secondary"
-            on:click={() => {variables = getNewVars(); setTimeout(() => document.getElementById('practice-tab')?.scrollIntoView(), 0);}}
+            on:click={()=>{variables = getNewVars(); setTimeout(() => document.getElementById('practice-tab')?.scrollIntoView(), 0);}}
           >
             Generate new question
             <img src="/icons/edit.svg" class="h-6 w-6 my-0" alt="practice"/>
           </button>
         </div>
       </div>
+    </label>
+  </div>
+  <h2>Extensions</h2>
+  <h3>Are there other methods?</h3>
+  <p>
+    The discriminant method is pretty tedious and we have to work
+    algebraically with both {@html math(`x`)} and 
+    {@html math(`y.`)}
+  </p><p>
+    The key words "without using a calculator" forced our hand into
+    using this approach. Sometimes, these key words can be
+    replaced by "using an algebraic method".
+    `,
+  </p>
+  <h3>The graphical approach</h3>
+  <p>
+    If the aforementioned key words are not present, then we
+    could answer the question about finding the set of values
+    {@html math(`y`)} can take with a graphical approach.
+    Give that a try to see if you can the same answer above!
+  </p>
+  <div class="alert">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    <div>
+      We may be only able to get a numerical answer correct to
+      3 significant figures if we use our GC to solve for the
+      turning points. An exact answer like above would require
+      differentiation which could end up even more tedious than
+      the discriminant approach.
     </div>
   </div>
-  <h2>Next Section</h2>
+  <h2>Next technique</h2>
   <p>
-    In the next section, we will learn
-    how to solve equations and inequalities with the
-    aid of a graphing calculator.
+    The next technique will tackle working with the modulus
+    function {@html math(`| x |.`)}
   </p>
-  <a class="btn btn-primary" href="../02-gc">
-    GC Techniques
+  <a class="btn btn-primary" href="./02-modulus">
+    Modulus function
     <img src="/icons/next-white.svg" class="h-6 w-6 my-0 text-white" alt="next"/>
   </a>
 </main>
