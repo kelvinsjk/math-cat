@@ -1,6 +1,4 @@
 <script lang="ts">
-  const currentSectionUrl = '01-inequalities';
-
   import { scale } from 'svelte/transition';
   import { content } from './content';
 	import { math } from 'mathlifier';
@@ -11,7 +9,7 @@
   import Question from '$lib/components/Question.svelte';
   import { tick } from 'svelte';
   
-  const { title, body, steps, formulas, mobileFormulas } = content;
+  const { title, steps, formulas, mobileFormulas } = content;
   let learnActive = true;
   function setLearnActive(active: boolean) {
     learnActive = active;
@@ -82,7 +80,7 @@
             </div>
           <h2>Overview</h2>
           <p>
-            The set of 3 {@html math(`f'(x)`)}
+            The set of three {@html math(`f'(x)`)}
             formulas is the first I try when I encounter
             a new integration question at this level.
             (Outside of the most basic formulas, of course).
@@ -147,7 +145,7 @@
           <h2>Solution</h2>
           {#key variables}
           <div in:scale>
-            {@html soln}
+            <Answer answer={soln} />
           </div>
           {/key}
           <button 
@@ -164,9 +162,9 @@
   <h2>Extensions</h2>
   <h3>What if our integrand isn't of the correct form?</h3>
   <p>
-    For example, {@html math(`\\int \\cos^2 x \\; \\mathrm{d}x`)}
+    For example, {@html math(`\\int \\cos^2 x \\, \\mathrm{d}x`)}
     doesn't look like any of the three formulas,
-    and for {@html math(`\\int \\frac{1}{x^2+x+1} \\; \\mathrm{d}x,`)}
+    and for {@html math(`\\int \\frac{1}{x^2+x+1} \\, \\mathrm{d}x,`)}
     if we let {@html math(`f(x) = x^2+x+1,`)} (to try to fit formula
     {@html math(`(1)`)}), then
     {@html math(`f'(x)=2x+1`)} isn't to be found anywhere.
@@ -188,7 +186,7 @@
     rational-like functions, including using formulas
     provided in the formula booklet MF26.
   </p>
-  <a class="btn btn-primary" href="./02-positive">
+  <a class="btn btn-primary" href="./02-rational">
     Rational-like functions
     <img src="/icons/next-white.svg" class="h-6 w-6 my-0 text-white" alt="next"/>
   </a>
