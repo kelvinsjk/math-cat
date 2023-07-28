@@ -11,7 +11,7 @@
   import Question from '$lib/components/Question.svelte';
   import { tick } from 'svelte';
   
-  const { title, body, steps } = content;
+  const { title, body, steps, formulas, mobileFormulas } = content;
   let learnActive = true;
   function setLearnActive(active: boolean) {
     learnActive = active;
@@ -41,6 +41,7 @@
 
 <main class="prose">
   <h1>{@html title}</h1>
+<!--Tabs-->
   <div class="tabs">
     <button
       class="tab tab-lifted"
@@ -64,18 +65,40 @@
       Practice
     </button> 
   </div>
+<!--Body-->
   <div class="body">
     <label class="swap swap-flip w-full place-content-stretch">
       <input type="checkbox" disabled checked={learnActive} />
+<!--Learn tab-->
       <div class="swap-on">
         {#if learnActive}
         <div>
-          <h2 class="mt-2">Example with comments</h2>
-          <h3>Question</h3>
-          {@html body}
-          <h3>Solution</h3>
+          <h2 class="mt-2">Formulas</h2>
+            <div class="formulas">
+              {@html formulas}
+            </div>
+            <div class="mobile-formulas">
+              {@html mobileFormulas}
+            </div>
+          <h2>Overview</h2>
+          <p>
+            The set of 3 {@html math(`f'(x)`)}
+            formulas is the first I try when I encounter
+            a new integration question at this level.
+            (Outside of the most basic formulas, of course).
+          </p>
+          <p>
+            If our integrand looks anything like one of the three,
+            we will make a guess for what {@html math(`f(x)`)}
+            is, differentiate it to get {@html math(`f'(x),`)}
+            and check if it is present.
+          </p>
+          <p>
+            Let us take a look at this technique with some examples.
+          </p>
+          <h2>Examples with comments</h2>
           {#each steps as step,i}
-          <h4>Step {i}. {step.title}</h4>
+          <h3>{step.title}</h3>
           <div>
             {@html step.body}
           </div>
@@ -97,6 +120,7 @@
         </div>
         {/if}
       </div>
+<!--Practice tab-->
       <div class="swap-off">
         <div>
           <h2 class="mt-2">Question</h2>
@@ -138,22 +162,34 @@
     </label>
   </div>
   <h2>Extensions</h2>
-  <h3>What if our quadratic is not factorisable?</h3>
+  <h3>What if our integrand isn't of the correct form?</h3>
   <p>
-    Maybe the quadratic still has roots, but they happen to be irrational so
-    we are unable to obtain nice factors.
+    For example, {@html math(`\\int \\cos^2 x \\; \\mathrm{d}x`)}
+    doesn't look like any of the three formulas,
+    and for {@html math(`\\int \\frac{1}{x^2+x+1} \\; \\mathrm{d}x,`)}
+    if we let {@html math(`f(x) = x^2+x+1,`)} (to try to fit formula
+    {@html math(`(1)`)}), then
+    {@html math(`f'(x)=2x+1`)} isn't to be found anywhere.
   </p>
   <p>
-    In that case we can use our quadratic formula {@html math(`x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}`)}
-    to find the roots and resume with our number line approach.
+    In that case we will be abandon this approach and see if
+    other techniques work. Why I originally recommend checking if
+    the {@html math(`f'(x)`)} formulas work is it is relatively quick
+    to check compared to the more complicated approaches we will be
+    learning later.
+  </p>
+  <p>
+    If it works, we are just one formula step away from the answer.
+    If not, we can easily pivot to think about other techniques.
   </p>
   <h2>Next technique</h2>
   <p>
-    The next technique will tackle the case if our quadratic
-    is not factorizable because it has no real roots
+    The next technique will tackle working with common
+    rational-like functions, including using formulas
+    provided in the formula booklet MF26.
   </p>
   <a class="btn btn-primary" href="./02-positive">
-    Positive Quadratics
+    Rational-like functions
     <img src="/icons/next-white.svg" class="h-6 w-6 my-0 text-white" alt="next"/>
   </a>
 </main>
@@ -186,5 +222,15 @@
   .swap {
     cursor: auto;
     user-select: auto;
+  }
+  @media only screen and (min-width:500px){
+    .mobile-formulas {
+      display: none
+    }
+  }
+  @media only screen and (max-width:499px){
+    .formulas {
+      display: none
+    }
   }
 </style>
