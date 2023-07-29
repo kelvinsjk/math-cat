@@ -27,37 +27,39 @@
   <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
 
   <h2>Topics</h2>
-  {#each topics as topic}
-  <div class="collapse collapse-arrow bg-base-200">
-    <input type="radio" name="topics-accordion" />
-    <div class="collapse-title font-bold">{topic.title}</div>
-    <div class="collapse-content bg-base-100 text-sm">
-      <ul class="steps steps-vertical outer">
-        {#each topic.sections as section}
-        <li class="step step-secondary outer">
-          <div class="self-start">
-            <div>
-              <a href={`/content/${topic.slug}/${section.slug}`}>{@html section.title}</a>
+  <div class="join join-vertical w-full">
+    {#each topics as topic}
+    <div class="collapse collapse-arrow join-item bg-base-200 border border-base-100">
+      <input type="radio" name="topics-accordion" />
+      <div class="collapse-title font-bold">{topic.title}</div>
+      <div class="collapse-content bg-base-100 text-sm">
+        <ul class="steps steps-vertical outer">
+          {#each topic.sections as section}
+          <li class="step step-secondary outer">
+            <div class="self-start">
+              <div>
+                <a href={`/content/${topic.slug}/${section.slug}`}>{@html section.title}</a>
+              </div>
+              {#if section.techniques.length > 1}
+              <div>
+                <ul class="steps steps-vertical">
+                  {#each section.techniques as technique}
+                  <li class="step step-primary">
+                    <a href={`/content/${topic.slug}/${section.slug}/${technique.slug}`}>{@html technique.title}</a>
+                  </li>
+                  {/each}
+                </ul>
+              </div>
+              {/if}
             </div>
-            {#if section.techniques.length > 1}
-            <div>
-              <ul class="steps steps-vertical">
-                {#each section.techniques as technique}
-                <li class="step step-primary">
-                  <a href={`/content/${topic.slug}/${section.slug}/${technique.slug}`}>{@html technique.title}</a>
-                </li>
-                {/each}
-              </ul>
-            </div>
-            {/if}
-          </div>
-          
-        </li>
-        {/each}
-      </ul>
+            
+          </li>
+          {/each}
+        </ul>
+      </div>
     </div>
+    {/each}
   </div>
-  {/each}
 </main>
 
 <style>
@@ -101,4 +103,9 @@
   .steps-vertical.outer {
     grid-auto-rows: auto;
   }
+  input[type="radio"]:checked + .collapse-title {
+    background-color: hsl(var(--p) / var(--tw-bg-opacity));
+    color: white;
+  }
+  
 </style>

@@ -1,4 +1,4 @@
-import { alignStar, display, gatherStar, } from "mathlifier"
+import { gatherStar, } from "mathlifier"
 
 const title = 'Rational-like integrals';
 
