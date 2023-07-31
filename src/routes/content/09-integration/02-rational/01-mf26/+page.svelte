@@ -6,6 +6,8 @@
   import { page } from '$app/stores';
 	import { browser } from '$app/environment';
   import { send, receive } from '$lib/utils/crossfade';
+  import Question from '$lib/components/Question.svelte';
+  import Answer from '$lib/components/Answer.svelte';
   
   const { title, examples, coeffExample, formulas, mobileFormulas } = content;
   let learnActive = true;
@@ -13,13 +15,14 @@
     learnActive = active;
   }
 
-  // practice
+  //! change this
+  import { qnGen } from '$lib/qnGen/09-integration/q090201';
+  //! change this
   import { vars } from './variables';
   import { getRandomInt } from 'mathlify';
-  import { qnGen } from '$lib/qnGen/01-eqns/q010301';
 	import { tick } from 'svelte';
   let variables = getNewVars();
-  $: [qn, _, ans, soln] = qnGen(variables);
+  $: [question, answer, soln] = qnGen(variables);
 
   type Variables = typeof vars[0];
   function getNewVars(): Variables {
@@ -92,14 +95,16 @@
         </div>
         {/if}
       </div>
+<!--Practice Tab-->
       <div class="swap-off">
+        {#if !learnActive}
         <div>
           <h2 class="mt-2">Question</h2>
           <div>
             Solve the following inequality
             {#key variables}
             <div in:scale>
-              {@html qn}
+              <Question {question} />
             </div>
             {/key}
           </div>
@@ -113,13 +118,13 @@
           <h2>Answer</h2>
           {#key variables}
           <div in:scale>
-            {@html ans}
+            <Answer {answer} />
           </div>
           {/key}
           <h2>Solution</h2>
           {#key variables}
           <div in:scale>
-            {@html soln}
+            <Answer answer={soln} />
           </div>
           {/key}
           <button 
@@ -130,6 +135,7 @@
             <img src="/icons/edit.svg" class="h-6 w-6 my-0" alt="practice"/>
           </button>
         </div>
+        {/if}
       </div>
     </label>
   </div>
